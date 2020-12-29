@@ -7,12 +7,17 @@ import { FinancasView } from '../views/FinancasView'
 import { FinancaService } from '../services/FinancaService'
 
 export class FinancaController {
+
     constructor() {
+ 
         let $ = document.querySelector.bind(document)
+        
         this._inputItem = $("#item")
         this._inputData = $("#data")
         this._inputQuantidade = $("#quantidade")
         this._inputValor = $("#valor")
+        // ATIVIDADE 4a
+        this._inputFiltro = $("#filtro")
 
         this._listaFinancas = new ListaFinancas()
         this._financasView = new FinancasView($("#financasView"), this)
@@ -97,6 +102,26 @@ export class FinancaController {
 
         this._ordemColuna = coluna
 
+        this._financasView.update(this._listaFinancas)
+    }
+
+    // ATIVIDADE 4b
+    // IMPORTANTE: ​Observe que para o filtro funcionar, a data cadastrada no campo está no formato mm/dd/yyyy, 
+    // mas a data exibida na lista de finanças é no formato dd/mm/aaaa.
+    filtra() {
+        if (this._inputFiltro.value === "") {
+            this._financasView.update(this._listaFinancas)
+        } else {
+            var listaFiltrada = new ListaFinancas()
+            listaFiltrada._financas = this._listaFinancas.filtra(
+                DateHelper.textoParaData(this._inputFiltro.value)
+            )
+            this._financasView.update(listaFiltrada)
+        }
+    }
+
+    // ATIVIDADE 5c
+    limpar() {
         this._financasView.update(this._listaFinancas)
     }
 
